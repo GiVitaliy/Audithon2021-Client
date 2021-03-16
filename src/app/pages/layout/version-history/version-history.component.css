@@ -1,0 +1,20 @@
+.itech-version-history .version-header {
+  margin-top: 10px;
+  vertical-align: middle;
+  display: flex;
+}
+
+.itech-version-history .version-no {
+  font-weight: bold;
+  font-size: large;
+}
+
+.itech-version-history .version-date {
+  margin-left: 10px;
+  font-size: small;
+  color: green;
+}
+
+.itech-version-history .version-change {
+  margin-left: 20px;
+}

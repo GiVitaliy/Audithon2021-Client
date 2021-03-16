@@ -1,0 +1,84 @@
+<div style="padding: 0 20px 20px 20px">
+
+  <h1 style="margin: 0 0 20px 0">Текущая активность</h1>
+
+  <div class="form-inline">
+    <div class="form-group">
+      <label>Сервис:&nbsp;&nbsp;&nbsp;</label>
+      <select class="form-control" [(ngModel)]="conversationTypeId" style="width:500px">
+        <option *ngFor="let item of conversationTypes"
+                [value]="item.a">
+          {{ item.a }} ({{ item.b }} мс, {{ item.c }} вызовов)
+        </option>
+      </select>
+
+      <span>&nbsp;&nbsp;&nbsp;</span>
+
+      <label>Отображаемый период:&nbsp;&nbsp;&nbsp;</label>
+      <select class="form-control" [(ngModel)]="interval">
+        <option value="1">~ 20 минут</option>
+        <option value="3">~ 1 час</option>
+        <option value="72">~ 1 день</option>
+      </select>
+    </div>
+  </div>
+
+  <br>
+
+  <div style="display: inline-block; width:900px;height:450px">
+    <canvas baseChart
+            [datasets]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="lineChartOptions"
+            [colors]="lineChartColors"
+            [legend]="lineChartLegend"
+            [chartType]="lineChartType"></canvas>
+  </div>
+
+  <h1 style="margin: 20px 0 20px 0">Список активных операций
+    <a class="itech-link" title="Обновить" (click)="refreshRunningOperations()">
+      <clr-icon shape="refresh" size="24"></clr-icon>
+    </a></h1>
+
+  <table cellpadding="2px">
+    <thead>
+    <tr>
+      <td><b>Операция</b></td>
+      <td><b>Начало</b></td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let item of runningOperations">
+      <td>{{ item.operationCode }}</td>
+      <td>{{ item.started | rtime }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h1 style="margin: 20px 0 20px 0">Список всех журналированных операций
+    <a class="itech-link" title="Обновить" (click)="refreshGatheredOperations()">
+      <clr-icon shape="refresh" size="24"></clr-icon>
+    </a></h1>
+
+  <table cellpadding="2px">
+    <thead>
+    <tr>
+      <td><b>Операция</b></td>
+      <td><b>Сумм. длительн.</b></td>
+      <td><b>Вызовов, ед.</b></td>
+      <td><b>Сред. длительн.</b></td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let item of conversationTypes2">
+      <td>{{ item.a }}</td>
+      <td>{{ item.b }} мс</td>
+      <td>{{ item.c }}</td>
+      <td>{{ formatAverage(item) }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

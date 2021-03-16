@@ -1,0 +1,25 @@
+<clr-modal *ngIf="navigationService.customModalOpened" [(clrModalOpen)]="navigationService.customModalOpened"
+           (keydown)="onInputKeyDown($event)"
+           [clrModalSize]="navigationService.customModalSize">
+  <h3 class="modal-title">
+    {{navigationService.customModalTitle}}
+  </h3>
+
+  <div class="modal-body">
+    <ng-container [appCustomModalHost]="navigationService.customModalComponent"
+                  [appCustomModalHostOnBodyCreate]="onBodyComponentCreate">
+    </ng-container>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="acceptModal()"
+            [disabled]="navigationService.customModalAcceptPressed?true: undefined"
+            [clrLoading]="navigationService.customModalAcceptPressed">
+      <clr-icon shape="check"></clr-icon>&nbsp;{{navigationService.customModalAcceptButtonText}}
+    </button>
+    <button type="button" class="btn btn-warning" (click)="navigationService.customModalOpened = false">
+      <clr-icon shape="undo"></clr-icon>&nbsp;Отмена
+    </button>
+  </div>
+
+</clr-modal>

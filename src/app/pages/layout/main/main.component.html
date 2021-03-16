@@ -1,0 +1,17 @@
+<div class="content-container itech-content">
+  <div class="content-area itech-content">
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+    <div class="itech-global-waiting-overlay" *ngIf="_waiting">
+      <div>
+        <div>
+        <span class="spinner"></span>
+        </div>
+        <div>
+        <span>Подождите...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

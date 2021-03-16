@@ -1,0 +1,86 @@
+<clr-dropdown>
+  <button *ngIf="!tinyLinkMode" [disabled]="disabled || (availableReports.length == 0 && availableGroups.length == 0)
+    || printing ?true: undefined"
+          class="btn btn-success-outline"
+          [class.without-border]="withoutBorder"
+          [clrLoading]="printing" clrDropdownToggle>
+    <clr-icon shape="printer"></clr-icon>&nbsp;{{title}}
+    <clr-icon shape="caret down"></clr-icon>
+  </button>
+
+  <a class="in-table-link" *ngIf="tinyLinkMode" clrDropdownToggle>
+    <clr-icon shape="printer"></clr-icon>&nbsp;{{title}}
+    <clr-icon shape="caret down"></clr-icon>
+  </a>
+
+  <clr-dropdown-menu *clrIfOpen [clrPosition]="dropdownPosition">
+    <label class="dropdown-header">Выберите печатную форму</label>
+
+    <clr-dropdown *ngFor="let group of availableGroups">
+      <button type="button" clrDropdownTrigger [title]="group.caption">{{group.caption}}</button>
+      <clr-dropdown-menu [clrPosition]="dropdownPosition">
+        <button *ngFor="let report of group.reports" [title]="report.caption"
+                type="button" clrDropdownItem (click)="printForm(report)">[{{report.id}}] {{report.caption}}
+        </button>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+
+    <button *ngFor="let report of availableReports" [title]="report.caption"
+            type="button" clrDropdownItem (click)="printForm(report)">[{{report.id}}] {{report.caption}}
+    </button>
+
+  </clr-dropdown-menu>
+</clr-dropdown>
+
+<clr-modal [(clrModalOpen)]="chooseParamsModalVisible" *ngIf="chooseParamsModalVisible"
+           [clrModalClosable]="false">
+  <h3 class="modal-title">Выберите параметры печати выходной формы</h3>
+  <div class="modal-body">
+    <div class="form compact" [formGroup]="paramsValues">
+
+      <ng-container *ngFor="let param of paramsValues.controls; index as i" [formGroup]="param">
+
+        <div class="form-group" *ngIf="param.get('dataType').value == 1">
+          <label for="paramStringValue{{i}}">{{param.get('displayName').value}}</label>
+          <label for="paramStringValue{{i}}" aria-haspopup="true" role="tooltip"
+                 class="tooltip tooltip-validation tooltip-md"
+                 [class.invalid]="isInvalid(param, 'paramStringValue')">
+            <input type="text" id="paramStringValue{{i}}" placeholder="{{param.get('displayName').value}}"
+                   class="itech-control-large"
+                   formControlName="paramStringValue">
+            <app-validation-tooltip [input]="param.controls['paramStringValue']"></app-validation-tooltip>
+          </label>
+        </div>
+
+        <div class="form-group" *ngIf="param.get('dataType').value == 2">
+          <label for="paramDateValue{{i}}">{{param.get('displayName').value}}</label>
+          <label for="paramDateValue{{i}}" aria-haspopup="true" role="tooltip"
+                 class="tooltip tooltip-validation tooltip-md"
+                 [class.invalid]="isInvalid(param, 'paramDateValue')">
+            <input type="date" id="paramDateValue{{i}}" class="itech-control-normal"
+                   formControlName="paramDateValue">
+            <app-validation-tooltip [input]="param.controls['paramDateValue']"></app-validation-tooltip>
+          </label>
+        </div>
+
+        <div class="form-group" *ngIf="param.get('comments').value">
+          <div class="itech-control-desc">
+            {{param.get('comments').value}}
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="modal-footer itech-form-actions">
+    <div>
+    </div>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="chooseParamsCompleted()">
+        <clr-icon shape="check"></clr-icon>&nbsp;Печать
+      </button>
+      <button type="button" class="btn btn-warning" (click)="chooseParamsCancelled()">
+        <clr-icon shape="undo"></clr-icon>&nbsp;Отмена
+      </button>
+    </div>
+  </div>
+</clr-modal>

@@ -1,0 +1,59 @@
+.content-area.itech-content {
+  align-self: stretch;
+  flex: 1;
+  padding: 40px 10px 10px 10px;
+  position: relative;
+  margin-top: -30px;
+}
+
+.content-container.itech-content {
+  position: absolute;
+  top: 1.5rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  margin-top: -30px;
+  padding-top: 30px;
+}
+
+.itech-content > .itech-global-waiting-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.90);
+  font-size: 50px;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  animation-name: waiting-opacity-keyframes;
+  animation-duration: 0.5s;
+  z-index: 1040;
+}
+
+.itech-content > .itech-global-waiting-overlay > div {
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
+  justify-content: center;
+}
+
+.itech-content > .itech-global-waiting-overlay > div > div {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
+@keyframes waiting-opacity-keyframes {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: rgba(255, 255, 255, 0.90);
+  }
+}

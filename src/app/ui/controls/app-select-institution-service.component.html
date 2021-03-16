@@ -1,0 +1,29 @@
+<div (clickOutside)="onClickedOutside($event)">
+  <div class="itech-combobox" (click)="togglePopup()">
+    <div>
+      <clr-icon shape="ruble" class="is-solid" style="color: green;margin-right: 2px" size="18"
+                *ngIf="showPayed"></clr-icon>
+    </div>
+    <div>{{selectedCaption}}</div>
+    <div>
+      <clr-icon shape="caret down"></clr-icon>
+    </div>
+  </div>
+  <div *ngIf="rootServiceForLookup && popupToggled" class="itech-combobox-popup-content">
+    <div>
+      <div>
+        <app-choose-tree-nodes [parent]="rootServiceForLookup" (click)="nodeClick($event)"></app-choose-tree-nodes>
+      </div>
+      <div style="display: flex; flex-direction: row; justify-content: space-between">
+        <div class="checkbox" *ngIf="showPayedInputVisible">
+          <input type="checkbox" id="showPayed" [(ngModel)]="showPayed" (change)="showPayedChanged()">
+          <label for="showPayed">Платная услуга</label>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="showUnavailable" [(ngModel)]="showUnavailable" (change)="showUnavailableChanged()">
+          <label for="showUnavailable">Показывать недоступные</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

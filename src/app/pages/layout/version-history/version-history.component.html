@@ -1,0 +1,31 @@
+<clr-modal [(clrModalOpen)]="appNavigationService.versionHistoryOpened"
+           *ngIf="appNavigationService.versionHistoryOpened"
+           [clrModalClosable]="true" [clrModalSize]="'lg'" class="itech-version-history">
+
+  <h3 class="modal-title">История изменений</h3>
+
+  <div class="modal-body">
+    <div *ngFor="let version of appVersionHistory.versions">
+      <div class="version-header">
+        <span class="version-no">{{version.version}}</span>
+        <span class="version-date">&nbsp;(Выпущена {{version.releaseDate}})</span>
+      </div>
+      <ul>
+        <li class="version-change" *ngFor="let change of version.changes">
+          {{change}}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="modal-footer itech-form-actions">
+    <div>
+    </div>
+    <div>
+      <button type="button" class="btn btn-link" (click)="appNavigationService.versionHistoryOpened = false">
+        <clr-icon shape="times"></clr-icon>&nbsp;Закрыть
+      </button>
+    </div>
+  </div>
+
+</clr-modal>

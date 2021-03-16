@@ -1,0 +1,66 @@
+<header class="header-6 header itech-header">
+  <div class="branding itech-header">
+    <a [routerLink]="['/']" class="nav-link">
+      <clr-icon shape="objects"></clr-icon>
+      <span class="title">Audithon 2021</span>
+    </a>
+  </div>
+  <div class="header-actions itech-header">
+    <div *ngIf="alertService.activeHttpRequests | async" class="nav-text itech-active-requests-header"
+         title="Количество запросов, выполняющихся в настоящее время на сервере">
+      <img src="/assets/images/progress.gif"> {{alertService.activeHttpRequests | async}}
+    </div>
+
+
+    <div class="nav-text itech-active-requests-header"
+         title="Версия приложения (щелкните, чтобы посмотреть список изменений)"
+         style="cursor: pointer" (click)="appNavigationService.versionHistoryOpened = true">
+      {{versionText}}
+    </div>
+
+
+    <clr-dropdown>
+      <button class="nav-icon" clrDropdownToggle title="Действия" style="width: 40px">
+        <clr-icon shape="bolt"></clr-icon>
+        <clr-icon shape="caret down"></clr-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+        <h4 class="dropdown-header">Действия</h4>
+        <button type="button" clrDropdownItem (click)="runDownloadEgissoStatistic()">
+          Обновление статистики из ЕГИССО</button>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+
+    <clr-dropdown>
+      <button class="nav-icon" clrDropdownToggle title="Настройки" style="width: 40px">
+        <clr-icon shape="settings"></clr-icon>
+        <clr-icon shape="caret down"></clr-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+        <h4 class="dropdown-header">Настройки</h4>
+        <clr-dropdown>
+          <button type="button" clrDropdownTrigger>Справочники</button>
+          <button type="button" clrDropdownItem [routerLink]="['/dictionary/addr-city']">Населенные пункты
+          </button>
+        </clr-dropdown>
+        <button type="button" clrDropdownItem [routerLink]="['/dictionary/job-schedule-item']">Фоновые задачи</button>
+        <button type="button" clrDropdownItem [routerLink]="['/dictionary/reports-browse']">Отчетные формы</button>
+
+        <div class="dropdown-divider"></div>
+
+        <button type="button" [routerLink]="['group-operation-browse']" clrDropdownItem>
+          Журнал регламентных операций
+        </button>
+        <button type="button" (click)="appNavigationService.navigateJournal(userInfo.id)" clrDropdownItem>
+          Журнал произведенных действий
+        </button>
+
+        <div class="dropdown-divider"></div>
+
+        <button type="button" [routerLink]="['telemetry']" clrDropdownItem>
+          Телеметрия
+        </button>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+  </div>
+</header>

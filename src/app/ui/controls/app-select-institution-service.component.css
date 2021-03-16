@@ -1,0 +1,53 @@
+.itech-combobox {
+  margin: 0;
+  border-bottom: 1px solid silver;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.itech-combobox:hover {
+  background: #eee;
+}
+
+.itech-combobox > div:first-child {
+  flex: 1 0 auto;
+}
+
+.itech-combobox > div:nth-child(2) {
+  flex: 1000 1 auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.itech-combobox-popup-content {
+  position: relative;
+}
+
+.itech-combobox-popup-content > div {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  padding: 5px;
+  background: white;
+  box-shadow: 0 6px 12px rgba(0,0,0,.1);
+  border: 1px solid silver;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+}
+
+.itech-combobox-popup-content > div > div:first-child {
+  flex: 1000 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.itech-combobox-popup-content > div > div:last-child {
+  flex: 1 0 auto;
+  padding: 10px;
+  border-top: 1px solid silver;
+}

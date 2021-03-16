@@ -1,0 +1,24 @@
+<clr-modal [(clrModalOpen)]="alertService.confirmModalOpened" (clrModalOpenChange)="selectedCheckboxConfirmAction = false">
+  <h3 class="modal-title">Подтвердите действие</h3>
+  <div class="modal-body">
+    {{alertService.confirmModalMsg}}
+    <div style="margin-top: 20px" *ngIf="alertService.requiredConfirmAction">
+      <hr>
+      <div class="checkbox" style="font-size: 0.5rem">
+        <input type="checkbox" id="checkbox-confirm-action" [(ngModel)]="selectedCheckboxConfirmAction">
+        <label for="checkbox-confirm-action" style="padding-left: 20px">
+          {{alertService.requiredConfirmActionText}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="acceptModal()"
+            [disabled]="alertService.requiredConfirmAction ? !selectedCheckboxConfirmAction : false">
+      <clr-icon shape="check"></clr-icon>&nbsp;{{alertService.confirmModalAcceptButtonText}}
+    </button>
+    <button type="button" class="btn btn-warning" (click)="alertService.confirmModalOpened = false">
+      <clr-icon shape="undo"></clr-icon>&nbsp;Отмена
+    </button>
+  </div>
+</clr-modal>

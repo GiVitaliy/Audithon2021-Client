@@ -1,0 +1,13 @@
+<clr-modal [(clrModalOpen)]="alertService.alertModalOpened">
+  <h3 class="modal-title">{{ alertService.alertModalTitle }}</h3>
+  <div class="modal-body" *ngIf="!alertService.alertModalRawHtml">
+    {{alertService.alertModalMsg}}
+  </div>
+  <div class="modal-body" *ngIf="alertService.alertModalRawHtml" [innerHTML]="alertService.alertModalMsg">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="acceptModal()">
+      <clr-icon shape="check"></clr-icon>&nbsp;OK
+    </button>
+  </div>
+</clr-modal>

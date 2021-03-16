@@ -1,0 +1,34 @@
+<label for="{{contextControlId || contextControlName}}"
+       aria-haspopup="true"
+       role="tooltip"
+       class="tooltip tooltip-validation tooltip-md"
+       (mouseenter)="hover()" (mouseleave)="hoverEnd()"
+       [formGroup]="contextFormGroup"
+       [class.tooltip-top-left]="validationTooltipTopLeft"
+       [class.tooltip-bottom-left]="validationTooltipBottomLeft"
+       [class.tooltip-bottom-right]="validationTooltipBottomRight"
+       [class.tooltip-right]="validationTooltipRight"
+       [class.invalid]="isInvalid(contextControlName)">
+  <div class="select" [class.itech-focused]="focused" [class.disabled]="disabled || controlIsDisabled">
+    <select id="{{contextControlId || contextControlName}}" [formControlName]="contextControlName"
+            (focus)="focus()" (blur)="blur()" (change)="onChange($event)"
+            [title]="getItemCaption() | async"
+            [attr.disabled]="disabled || controlIsDisabled ? '' : undefined">
+      <option></option>
+      <option *ngFor=" let item of lookupItems" [value]="item.id" [title]="item.caption"
+              [attr.disabled]="isDisabledChoice(item.id) ? 'disabled' : undefined">
+        {{item.caption}}
+      </option>
+      <option *ngIf="bonusDeletedItem" [value]="bonusDeletedItem.id" [title]="bonusDeletedItem.caption"
+              [attr.disabled]="'disabled'">
+        {{bonusDeletedItem.caption}} (Архивная запись)
+      </option>
+    </select>
+    <button *ngIf="hovered && !required && contextFormGroup.controls[contextControlName].value" type="button"
+            class="btn btn-danger btn-link itech-inline-tool-btn" title="Очистить"
+            (click)="clearValue()" style="position: absolute; right: 0px; top: 0px; z-index: 10; color:grey">
+      <clr-icon shape="times"></clr-icon>
+    </button>
+  </div>
+  <app-validation-tooltip [input]="contextFormGroup.controls[contextControlName]"></app-validation-tooltip>
+</label>

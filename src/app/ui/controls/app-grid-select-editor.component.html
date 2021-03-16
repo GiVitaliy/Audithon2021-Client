@@ -1,0 +1,3 @@
+<select  #input  [(ngModel)]="value" (keydown)="keyDown($event)">
+  <option *ngFor="let item of options$ | async" value="{{item.id}}">{{item.caption}}</option>
+</select>

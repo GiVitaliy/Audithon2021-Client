@@ -1,0 +1,141 @@
+<div class="itech-common-wrap no-pager">
+  <div class="itech-v-header-content not-scrolled">
+    <div class="itech-content-header itech-no-margin-bottom">
+      <clr-icon shape="file-group" size="36"></clr-icon>&nbsp;{{getMetaTitle()}}
+    </div>
+
+    <div style="padding: 5px; height: 90%">
+      <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham"
+                       [localeTextFunc]="agGridLocaleTextFunc"
+                       [defaultColDef]="defaultColDef"
+                       [getRowStyle]="getRowStyle"
+                       [rowData]="_searchResults" [overlayNoRowsTemplate]="'Нет данных для отображения'"
+                       (rowClicked)="editRow($event.data)"
+                       [columnDefs]="gridColumnDefs">
+      </ag-grid-angular>
+    </div>
+  </div>
+  <div class="itech-form-actions">
+    <div>
+      <button class="btn btn-link btn-primary" (click)="refreshResults()">
+        <clr-icon shape="refresh" class="has-badge"></clr-icon>&nbsp;Обновить список
+      </button>
+      <button class="btn btn-link btn-primary" (click)="editRow({})">
+        <clr-icon shape="plus" has-badge="true"></clr-icon>&nbsp;Добавить новую запись
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<clr-modal [(clrModalOpen)]="editModalOpened" *ngIf="editModalOpened" [clrModalClosable]="false" [clrModalSize]="'lg'">
+  <h3 class="modal-title">Редактирование элемента
+    <span *ngIf="currentIsNew" style="color:green"> [Новый]</span></h3>
+  <div class="modal-body">
+    <div class="form compact" [formGroup]="currentFormGroup">
+
+      <section class="form-block itech-block-large">
+
+        <div class="form-group">
+          <label for="id" class="required">Ид записи</label>
+          <label for="id" aria-haspopup="true" role="tooltip"
+                 class="tooltip tooltip-validation tooltip-md tooltip-bottom-left"
+                 [class.invalid]="isInvalid(currentFormGroup, 'id')">
+            <input type="text" id="id" placeholder="<<новая>>" class="itech-control-xlarge"
+                   formControlName="id" readonly>
+            <app-validation-tooltip [input]="currentFormGroup.controls['id']"></app-validation-tooltip>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="jobTypeId" class="required">Операция</label>
+          <app-combo-lookup class="itech-control-xlarge" [contextControlId]="'jobTypeId'"
+                            [contextControlName]="'jobTypeId'" [lookupName]="'job-type'"
+                            [validationTooltipBottomRight]="true"
+                            [contextFormGroup]="currentFormGroup"></app-combo-lookup>
+        </div>
+
+        <div class="form-group">
+          <label for="jobPeriodicity" class="required">Периодичность</label>
+          <app-combo-lookup class="itech-control-xlarge" [contextControlId]="'jobPeriodicity'"
+                            [contextControlName]="'jobPeriodicity'" [lookupName]="'job-schedule-item-periodicity'"
+                            [contextFormGroup]="currentFormGroup"></app-combo-lookup>
+        </div>
+
+        <div class="form-group">
+          <label for="allowedHourFrom">Часы запуска (с/по)</label>
+          <label for="allowedHourFrom" aria-haspopup="true" role="tooltip"
+                 class="tooltip tooltip-validation tooltip-md tooltip-bottom-left"
+                 [class.invalid]="isInvalid(currentFormGroup, 'allowedHourFrom')">
+            <input type="text" id="allowedHourFrom" class="itech-control-normal"
+                   formControlName="allowedHourFrom">
+            <app-validation-tooltip
+              [input]="currentFormGroup.controls['allowedHourFrom']"></app-validation-tooltip>
+          </label>
+          <label for="allowedHourToExcluded" aria-haspopup="true" role="tooltip"
+                 class="tooltip tooltip-validation tooltip-md tooltip-bottom-left"
+                 [class.invalid]="isInvalid(currentFormGroup, 'allowedHourToExcluded')">
+            <input type="text" id="allowedHourToExcluded" class="itech-control-normal"
+                   formControlName="allowedHourToExcluded">
+            <app-validation-tooltip
+              [input]="currentFormGroup.controls['allowedHourToExcluded']"></app-validation-tooltip>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="plannedDay">День запуска</label>
+          <label for="plannedDay" aria-haspopup="true" role="tooltip"
+                 class="tooltip tooltip-validation tooltip-md tooltip-bottom-left"
+                 [class.invalid]="isInvalid(currentFormGroup, 'plannedDay')">
+            <input type="text" id="plannedDay" class="itech-control-xlarge"
+                   formControlName="plannedDay">
+            <app-validation-tooltip
+              [input]="currentFormGroup.controls['plannedDay']"></app-validation-tooltip>
+          </label>
+        </div>
+
+        <div class="form-group itech-height-x4 v-resize">
+          <label for="parameters">Параметры запуска задачи</label>
+          <label for="parameters" aria-haspopup="true" role="tooltip"
+                 class="tooltip tooltip-validation tooltip-md tooltip-top-left"
+                 [class.invalid]="isInvalid(currentFormGroup, 'parameters')">
+            <textarea type="text" id="parameters" placeholder="Укажите параметры запуска задачи"
+                      class="itech-control-xlarge itech-text-wall" formControlName="parameters">
+            </textarea>
+            <app-validation-tooltip
+              [input]="currentFormGroup.controls['parameters']"></app-validation-tooltip>
+          </label>
+        </div>
+
+        <div class="form-group itech-group-whole-line">
+          <label for="enabled"></label>
+          <div class="checkbox">
+            <input type="checkbox" id="enabled" formControlName="enabled">
+            <label for="enabled">Элемент расписания включен</label>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </div>
+  <div class="modal-footer itech-form-actions">
+    <div>
+      <button *ngIf="!currentIsNew" type="button" class="btn btn-warning-outline"
+              (click)="delete(currentFormGroup.value)">
+        <clr-icon shape="trash"></clr-icon>&nbsp;Удалить
+      </button>
+      <button type="button" class="btn btn-success" (click)="runOperation()" [disabled]="!currentFormGroup.valid">
+        <clr-icon shape="check"></clr-icon>&nbsp;Запустить сейчас
+      </button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="addEditCompleted()">
+        <clr-icon shape="check"></clr-icon>&nbsp;Сохранить
+      </button>
+      <button type="button" class="btn btn-warning" (click)="editModalOpened = false">
+        <clr-icon shape="undo"></clr-icon>&nbsp;Отмена
+      </button>
+    </div>
+  </div>
+</clr-modal>

@@ -1,0 +1,42 @@
+<label for="{{contextControlId || contextControlName}}"
+       aria-haspopup="true"
+       role="tooltip"
+       class="tooltip tooltip-validation tooltip-md"
+       (mouseenter)="onHover()" (mouseleave)="onHoverEnd()"
+       [class.tooltip-top-left]="validationTooltipTopLeft"
+       [class.tooltip-bottom-left]="validationTooltipBottomLeft"
+       [class.tooltip-right]="validationTooltipRight"
+       [class.invalid]="isInvalid(contextControlName)">
+  <input autocomplete="off" #textInput type="text" id="{{contextControlId || contextControlName}}"
+         (focus)="onFocus()" (blur)="onBlur()" [class.disabled]="disabled"
+         (keydown)="onInputKeyDown($event)" [attr.disabled]="disabled?true:undefined"
+         [placeholder]="placeholder"
+         [title]="selectedValueText"/>
+  <button *ngIf="hovered && !required && contextFormGroup.controls[contextControlName].value" type="button"
+          class="btn btn-danger btn-link itech-inline-tool-btn" title="Очистить"
+          (click)="clearValue()" style="position: absolute; right: 0px; top: 0px; z-index: 10; color:grey">
+    <clr-icon shape="times"></clr-icon>
+  </button>
+  <app-validation-tooltip [input]="contextFormGroup.controls[contextControlName]" *ngIf="visibleValidationTextError"></app-validation-tooltip>
+</label>
+<div style="position: relative;transition: left 0.2s ease-out, top 0.2s ease-out, color 0.2s ease-out"
+     [style.top]="focused? '-40px': '-28px'" [style.color]="focused || disabled? 'silver': 'black'"
+     [style.left]="focused? '64px': '0'">
+  <div class="itech-selected-lookup-text" *ngIf="selectedValueText">
+    {{focused?'Выбрано: ': ''}}{{selectedValueText}}
+  </div>
+</div>
+<div *ngIf="focused" style="position: relative; top: -28px; left: 0">
+  <div class="itech-lookup-popup-container">
+    <a *ngIf="selectedValueText" (click)="selectLookupItem(undefined)" class="in-table-link"
+       style="border-bottom: 1px solid silver">Очистить выбранное значение</a>
+    <div *ngFor="let item of lookupItems; index as i" (click)="selectLookupItem(item)" class="itech-lookup-popup-element"
+         id="{{'ppp' + rndToken + '_' + i}}" [class.itech-selected]="popupSelectedIndex === i">
+      {{item.captionBefore}}<strong style="color: green">{{item.captionSearchText}}</strong>{{item.captionAfter}}
+      <span class="lookup-comments">{{item.comments}}</span>
+    </div>
+    <div *ngIf="lookupItems && lookupItems.length >= 50" class="itech-control-desc">
+      Отображены первые 50 записей. При необходимости уточните параметры поиска.
+    </div>
+  </div>
+</div>

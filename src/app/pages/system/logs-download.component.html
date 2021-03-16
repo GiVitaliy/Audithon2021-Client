@@ -1,0 +1,28 @@
+<div class="itech-content-header">
+  <clr-icon shape="file-zip" size="36"></clr-icon>&nbsp;Скачивание архива лог-файлов
+</div>
+
+<div *ngIf="contextFormGroup" class="compact form" [formGroup]="contextFormGroup">
+
+  <section class="form-block itech-block-medium itech-block-inline">
+
+    <div class="form-group">
+      <label for="dateFrom" class="required">Начало периода</label>
+      <app-datetime-picker [contextControlName]="'dateFrom'" [contextFormGroup]="contextFormGroup"
+                         id="dateFrom"></app-datetime-picker>
+    </div>
+
+
+    <div class="form-group">
+      <label for="dateTo" class="required">Окончание периода</label>
+      <app-datetime-picker [contextControlName]="'dateTo'" [contextFormGroup]="contextFormGroup"
+                           id="dateTo"></app-datetime-picker>
+    </div>
+  </section>
+
+  <div>
+    <button [clrLoading]="processing" [disabled]="contextFormGroup.invalid" class="btn btn-primary"
+            (click)="download()">Скачать архив
+    </button>
+  </div>
+</div>

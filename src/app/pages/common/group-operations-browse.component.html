@@ -1,0 +1,30 @@
+<div class="itech-common-wrap no-pager">
+  <div class="itech-v-header-content not-scrolled">
+    <div class="itech-content-header itech-no-margin-bottom">
+      <clr-icon shape="bolt" size="36"></clr-icon>&nbsp;Журнал регламентных операций
+    </div>
+
+    <div style="padding: 5px; height: 90%">
+      <ag-grid-angular #agGrid style="width: 100%; height: 100%;" class="ag-theme-balham"
+                       [localeTextFunc]="agGridLocaleTextFunc" (gridReady)="agGridReady()"
+                       [getRowNodeId] = "rowIdFunc"
+                       [defaultColDef]="defaultColDef"
+                       [rowData]="_searchResults" [overlayNoRowsTemplate]="'Нет данных для отображения'"
+                       [columnDefs]="gridColumnDefs" (rowClicked)="appNavigationService.navigateGroupOperation($event.data)">
+      </ag-grid-angular>
+    </div>
+
+    <div class="itech-control-desc itech-desc-error">
+      <clr-icon shape="exclamation-circle"></clr-icon>
+      Показаны операции за последний месяц
+    </div>
+  </div>
+
+  <div class="itech-form-actions">
+    <div>
+      <button class="btn btn-link btn-primary" (click)="refreshResults()">
+        <clr-icon shape="refresh" class="has-badge"></clr-icon>&nbsp;Обновить список
+      </button>
+    </div>
+  </div>
+</div>
