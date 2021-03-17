@@ -6,27 +6,25 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 })
 export class MoMapComponent implements OnChanges {
 
-  static colorStops = ['#c0fff6',
-    '#90fff6',
-    '#60fff6',
-    '#30fff6',
-    '#00fff6',
-    '#00ffd1',
-    '#00ffa4',
-    '#00ff75',
-    '#00ff5e',
-    '#00ff00',
-    '#2eff00',
-    '#4eff00',
-    '#aaff00',
-    '#e2ff00',
-    '#ffeb00',
-    '#ffc100',
-    '#ffaa00',
-    '#ff9800',
-    '#ff8000',
-    '#ff6c00',
-    '#ff4600',
+  static colorStops = [
+    '#ffffff',
+    '#f1f8e9',
+    '#daedc7',
+    '#c5e1a5',
+    '#b7d99a',
+    '#aed581',
+    '#a8d170',
+    '#9ccc65',
+    '#93c858',
+    '#8bc34a',
+    '#86bb46',
+    '#7cb342',
+    '#72ac3d',
+    '#689f38',
+    '#5e9834',
+    '#558b2f',
+    '#447a27',
+    '#33691e'
   ];
 
   @Input() data;
@@ -82,7 +80,7 @@ export class MoMapComponent implements OnChanges {
       const singleMoData = this.data[mo];
 
       if (maxVal > minVal && singleMoData.color > 0) {
-        const perc = (singleMoData.color - minVal) * 20 / (maxVal - minVal);
+        const perc = (singleMoData.color - minVal) * 17 / (maxVal - minVal);
         singleMoData.__app_color = MoMapComponent.colorStops[Math.floor(perc)];
       } else {
         singleMoData.__app_color = 'white';

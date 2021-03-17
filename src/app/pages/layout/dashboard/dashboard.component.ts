@@ -10,7 +10,7 @@ import { UserSettingService } from '../../../logic/services/user-setting.service
 })
 export class DashboardComponent implements OnInit {
 
-  moData: any = {4: {color: 12}, 3: {color: 1}, 5: {color: 13}};
+  moData: any = {4: {color: 12}, 3: {color: 3}, 5: {color: 13}, 6: {color: 23}, 18: {color: 63}, 71100: {color: 54}};
 
   constructor(public appNavigationService: AppNavigationService,
               private metadataService: MetadataService,

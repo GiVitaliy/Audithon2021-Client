@@ -2118,7 +2118,7 @@ app-mo-map > svg path {
 }
 
 app-mo-map > svg path.itech-hovered {
-  stroke: #0000ff;
+  stroke: #004000;
   stroke-width: 10px;
 }
 
