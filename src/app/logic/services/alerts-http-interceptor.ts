@@ -31,11 +31,6 @@ export class AlertsHttpInterceptor implements HttpInterceptor {
       },
       // Operation failed; error is an HttpErrorResponse
       error => {
-        if (error.error && error.error.data &&
-            error.error.data.exception === 'ru.infotech24.a18main.security.oauth.EsiaFoundMultipleInstitutionException') {
-          return;
-        }
-
         if (error.error && error.error.messages) {
           this.processMessages(error.error.messages);
         } else {

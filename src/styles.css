@@ -2099,3 +2099,45 @@ nav > .sidenav-content.itech-nav-content > .nav-group .nav-link {
 .form .form-group>app-combo-lookup:not(:first-child) {
   margin-right: .5rem;
 }
+
+.itech-dashboard-container > app-mo-map.view-mode1 > svg {
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+app-mo-map > svg path {
+  stroke: #000000;
+  stroke-width: 1px;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  stroke-opacity: 1;
+  display: inline
+}
+
+app-mo-map > svg path.itech-hovered {
+  stroke: #0000ff;
+  stroke-width: 10px;
+}
+
+app-mo-map > #focused-map-details {
+  width: 150px;
+  height: 130px;
+  position: absolute;
+  left: 5px;
+  top: 0;
+  border: 1px solid silver;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+app-mo-map > #focused-map-details > h5 {
+  padding: 0 0 5px 0;
+  margin: 0;
+  border-bottom: 1px solid silver;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+}

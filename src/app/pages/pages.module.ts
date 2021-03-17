@@ -31,6 +31,7 @@ import { AgGridCheckboxRendererComponent } from '../ui/controls/ag-grid-checkbox
 import { TelemetryComponent } from './admin/telemetry.component';
 import { ChartsModule } from 'ng2-charts';
 import { AgGridOverlayProgressComponent } from '../ui/controls/ag-grid-overlay-progress.component';
+import { MoMapComponent } from './common/mo-map.component';
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { AgGridOverlayProgressComponent } from '../ui/controls/ag-grid-overlay-p
     ModalSelectItemsComponent,
     AppCustomPrintComponent,
     TelemetryComponent,
+    MoMapComponent,
   ],
   exports: [
     LayoutComponent,

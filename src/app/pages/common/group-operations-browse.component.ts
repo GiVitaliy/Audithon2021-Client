@@ -47,10 +47,6 @@ export class GroupOperationsBrowseComponent implements OnInit {
       }
     },
     {
-      headerName: 'Пользователь', field: '__cl_userTitle',
-      width: 200,
-    },
-    {
       headerName: 'Начало',
       field: 'created',
       width: 160,
