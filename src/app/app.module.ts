@@ -24,7 +24,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { LoggerFactory } from './logger/logger.factory';
 import { ProcessingHelper } from './helpers/processing-helper';
 import { UserSettingService } from './logic/services/user-setting.service';
-import { AdminService } from './logic/services/admin.service';
+import { IndicatorUiService } from './logic/services/indicator-ui.service';
 
 registerLocaleData(localeRu);
 
@@ -67,7 +67,7 @@ registerLocaleData(localeRu);
     {provide: LOCALE_ID, useValue: 'ru'},
     GroupOperationsService,
     GroupOperationsService,
-    AdminService
+    IndicatorUiService
   ],
   bootstrap: [AppComponent]
 })

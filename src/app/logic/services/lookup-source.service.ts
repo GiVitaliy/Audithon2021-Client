@@ -177,13 +177,30 @@ export class LookupSourceService {
         {id: 5, caption: 'Предоставление доступа пользователю'},
         {id: 6, caption: 'Передача дела'}
       ]);
-    } else if (lookupNameLower === 'msp-charge-way') {
+    } else if (lookupNameLower === 'app-months') {
       existing.next([
-        {id: 1, caption: 'Ежемесячно'},
-        {id: 2, caption: 'Единовременно'},
+        {id: 1, caption: 'Январь'},
+        {id: 2, caption: 'Февраль'},
+        {id: 3, caption: 'Март'},
+        {id: 4, caption: 'Апрель'},
+        {id: 5, caption: 'Май'},
+        {id: 6, caption: 'Июнь'},
+        {id: 7, caption: 'Июль'},
+        {id: 8, caption: 'Август'},
+        {id: 9, caption: 'Сентябрь'},
+        {id: 10, caption: 'Октябрь'},
+        {id: 11, caption: 'Ноябрь'},
+        {id: 12, caption: 'Декабрь'},
       ]);
-    } else if (lookupNameLower === 'ippsu-template-strategy') {
-      existing.next([{id: 1, caption: 'По умолчанию'}, {id: 2, caption: 'Нарушения/ограничения ИПРА'}]);
+    } else if (lookupNameLower === 'app-indicator-modes') {
+      existing.next([{id: 'value', caption: 'Первичное'},
+        {id: 'valueMa', caption: 'Скользящее ср.', shortCaption: 'MA'},
+        {id: 'valueMaTrend', caption: 'Ск.ср. тренд', shortCaption: 'MA\''},
+        {id: 'valueMaTrendX2', caption: 'Ск.ср. тренд 2x', shortCaption: 'MA\'\''}]);
+    } else if (lookupNameLower === 'app-years') {
+      existing.next([{id: 2018, caption: '2018'},
+        {id: 2019, caption: '2019'},
+        {id: 2020, caption: '2020'}]);
     } else if (lookupNameLower === 'report-period-mode') {
       existing.next([{id: 1, caption: 'За месяц'}, {id: 2, caption: 'За квартал'}]);
     } else if (lookupNameLower === 'rsdp-export-mode') {

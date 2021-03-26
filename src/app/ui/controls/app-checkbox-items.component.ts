@@ -1,8 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { LookupSourceService } from '../../logic/services/lookup-source.service';
 import { FormArray, FormBuilder } from '@angular/forms';
-import { map } from 'rxjs/internal/operators';
-import {isObservable, Observable, of} from 'rxjs/index';
 
 @Component({
   selector: 'app-checkbox-items',

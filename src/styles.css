@@ -1205,6 +1205,7 @@ pre.full-width-details {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 32px;
+  color: silver;
 }
 
 .itech-lookup-popup-container {
@@ -1217,11 +1218,14 @@ pre.full-width-details {
   flex-direction: column;
   z-index: 10;
   background: white;
+  color: #222222;
   border-radius: 0 0 5px 5px;
   padding: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   overflow-y: scroll;
+  white-space: normal;
+  word-wrap: normal;
 }
 
 .itech-lookup-popup-container > .itech-lookup-popup-element {
@@ -1248,10 +1252,6 @@ pre.full-width-details {
 .itech-lookup-popup-container > .itech-lookup-popup-element:hover,
 .itech-lookup-popup-container > .itech-lookup-popup-element.itech-selected {
   background-color: #90c4ff;
-}
-
-app-text-lookup input[type=text]:hover {
-  background-color: #eee !important;
 }
 
 .itech-msp-calculation-container {
@@ -2055,6 +2055,10 @@ app-text-lookup input:disabled:hover {
   background: inherit !important;;
 }
 
+app-combo-lookup select {
+  color: silver !important;
+}
+
 nav > .sidenav-content.itech-nav-content .nav-link {
   margin: 5px 0 0 0;
 }
@@ -2101,7 +2105,7 @@ nav > .sidenav-content.itech-nav-content > .nav-group .nav-link {
 }
 
 .itech-dashboard-container > app-mo-map.view-mode1 > svg {
-  width: 50%;
+  width: 60%;
   height: 50%;
   position: absolute;
   left: 0;
@@ -2114,12 +2118,26 @@ app-mo-map > svg path {
   stroke-linecap: butt;
   stroke-linejoin: miter;
   stroke-opacity: 1;
-  display: inline
+  display: inline;
+  fill: white;
 }
 
 app-mo-map > svg path.itech-hovered {
-  stroke: #004000;
-  stroke-width: 10px;
+  stroke: #0040A0;
+  stroke-width: 20px;
+}
+
+app-mo-map > #map-title {
+  width: 40%;
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  font-size: 14px;
+  line-height: 14px;
+  z-index: 1;
+  color: #555;
+  font-weight: bold;
+  user-select: none;
 }
 
 app-mo-map > #focused-map-details {
@@ -2140,4 +2158,34 @@ app-mo-map > #focused-map-details > h5 {
   text-align: center;
   width: 100%;
   font-weight: bold;
+  font-size: 10px;
+}
+
+.itech-dashboard-container > .grid-container.view-mode1 {
+  width: 40%;
+  height: 100%;
+  position: absolute;
+  left: 60%;
+  top: 0;
+  padding: 5px;
+}
+
+.itech-dashboard-container > .chart-container.view-mode1 {
+  width: 60%;
+  height: 50%;
+  position: absolute;
+  left: 0;
+  top: 50%;
+}
+
+
+.map-legend-item {
+  background: green;
+  border: 1px solid silver;
+  display: inline-block;
+  width: 16px;
+  line-height: 16px;
+  height: 16px;
+  margin-right: 5px;
+  margin-top: 5px;
 }

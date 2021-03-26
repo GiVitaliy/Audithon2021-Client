@@ -4,8 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { AlertService } from '../../../ui/infrastructure/alert.service';
 import { LookupSourceService } from '../../../logic/services/lookup-source.service';
 import { MetadataService } from '../../../logic/services/metadata.service';
-import { UserSettingService } from '../../../logic/services/user-setting.service';
 import { JobRunnerUiService } from '../../../ui/infrastructure/job-runner-ui.service';
+import { IndicatorUiService } from '../../../logic/services/indicator-ui.service';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
               public metadataService: MetadataService,
               public appNavigationService: AppNavigationService,
               public lookupSourceService: LookupSourceService,
-              public userSettingService: UserSettingService,
+              public indicatorUiService: IndicatorUiService,
               private jobRunnerUiService: JobRunnerUiService) {
     if (!environment.production) {
       this.testEnvText = 'ТЕСТОВАЯ ';

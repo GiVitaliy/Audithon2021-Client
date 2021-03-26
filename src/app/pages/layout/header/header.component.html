@@ -1,9 +1,31 @@
-<header class="header-6 header itech-header">
+<header class="header-6 header itech-header" [formGroup]="indicatorUiService.paramsFormGroup">
   <div class="branding itech-header">
     <a [routerLink]="['/']" class="nav-link">
       <clr-icon shape="objects"></clr-icon>
       <span class="title">Audithon 2021</span>
     </a>
+  </div>
+  <div class="itech-header form">
+    <div class="form-group itech-group-whole-line">
+      <app-text-lookup class="itech-control-m-large" [contextControlId]="'indicatorTypeId'"
+                       [contextControlName]="'indicatorTypeId'" [lookupName]="'indicator-type/favorites'"
+                       [contextFormGroup]="indicatorUiService.paramsFormGroup"></app-text-lookup>
+      &nbsp;&nbsp;
+      <app-combo-lookup class="itech-control-normal" [contextControlId]="'month'" [sorted]="false"
+                       [contextControlName]="'month'" [lookupName]="'app-months'"
+                       [contextFormGroup]="indicatorUiService.paramsFormGroup"></app-combo-lookup>
+      &nbsp;&nbsp;
+      <app-combo-lookup class="itech-control-small" [contextControlId]="'year'" [sorted]="false"
+                       [contextControlName]="'year'" [lookupName]="'app-years'"
+                       [contextFormGroup]="indicatorUiService.paramsFormGroup"></app-combo-lookup>
+      &nbsp;&nbsp;
+      <app-combo-lookup class="itech-control-normal" [contextControlId]="'mode'" [sorted]="false"
+                        [contextControlName]="'mode'" [lookupName]="'app-indicator-modes'"
+                        [contextFormGroup]="indicatorUiService.paramsFormGroup"></app-combo-lookup>
+      <a class="itech-link" title="Добавить выбранный индикатор" (click)="indicatorUiService.addIndicator()">
+        <clr-icon shape="play solid"></clr-icon>
+      </a>
+    </div>
   </div>
   <div class="header-actions itech-header">
     <div *ngIf="alertService.activeHttpRequests | async" class="nav-text itech-active-requests-header"
@@ -27,7 +49,8 @@
       <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
         <h4 class="dropdown-header">Действия</h4>
         <button type="button" clrDropdownItem (click)="runDownloadEgissoStatistic()">
-          Обновление статистики из ЕГИССО</button>
+          Обновление статистики из ЕГИССО
+        </button>
       </clr-dropdown-menu>
     </clr-dropdown>
 

@@ -1,3 +1,27 @@
 <div class="itech-dashboard-container">
-  <app-mo-map [data]="moData" [class.view-mode1]="true"></app-mo-map>
+  <app-mo-map [data]="indicatorUiService.mapData" [title]="(indicatorUiService.mapIndicator || {}).indicatorCaption"
+              [class.view-mode1]="true" (moClicked)="moClicked($event)" [forcedFocusedId]="forcedFocusedId"></app-mo-map>
+
+  <div class="grid-container" [class.view-mode1]="true">
+    <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" id="agGrid" *ngIf="shouldRenderGrid"
+                     [localeTextFunc]="agGridLocaleTextFunc"
+                     [defaultColDef]="defaultColDef" [rowSelection]="'single'" (rowSelected)="onRowSelected($event)"
+                     [getRowStyle]="getRowStyle" [getContextMenuItems]="getContextMenuItems"
+                     [headerHeight]="80" (gridReady)="onGridReady($event)"
+                     [rowData]="indicatorUiService.gridData" [overlayNoRowsTemplate]="'Нет данных для отображения'"
+                     [columnDefs]="indicatorUiService.gridColumnDefs">
+    </ag-grid-angular>
+  </div>
+
+  <div class="chart-container" [class.view-mode1]="true" *ngIf="shouldRenderChart">
+    <canvas baseChart
+            [datasets]="indicatorUiService.lineChartData"
+            [labels]="indicatorUiService.lineChartLabels"
+            [options]="indicatorUiService.lineChartOptions"
+            [colors]="indicatorUiService.lineChartColors"
+            [legend]="true"
+            [chartType]="'line'"></canvas>
+  </div>
+
 </div>
+
