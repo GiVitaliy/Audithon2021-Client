@@ -151,4 +151,8 @@ export class DashboardComponent implements OnInit {
       this.shouldRenderChart = true;
     }, 100);
   }
+
+  onMapModeChange() {
+    this.indicatorUiService.updateDataColors();
+  }
 }

@@ -2055,6 +2055,10 @@ app-text-lookup input:disabled:hover {
   background: inherit !important;;
 }
 
+app-text-lookup input {
+  color: silver !important;
+}
+
 app-combo-lookup select {
   color: silver !important;
 }
@@ -2103,6 +2107,16 @@ nav > .sidenav-content.itech-nav-content > .nav-group .nav-link {
 .form .form-group>app-combo-lookup:not(:first-child) {
   margin-right: .5rem;
 }
+
+.itech-dashboard-container > .app-map-mode {
+  width: 60%;
+  height: 50%;
+  position: absolute;
+  left: 5px;
+  top: 50px;
+  z-index: 1;
+}
+
 
 .itech-dashboard-container > app-mo-map.view-mode1 > svg {
   width: 60%;

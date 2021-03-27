@@ -2,6 +2,21 @@
   <app-mo-map [data]="indicatorUiService.mapData" [title]="(indicatorUiService.mapIndicator || {}).indicatorCaption"
               [class.view-mode1]="true" (moClicked)="moClicked($event)" [forcedFocusedId]="forcedFocusedId"></app-mo-map>
 
+  <!--<div class="app-map-mode form">-->
+    <!--<div class="radio" title="1">-->
+      <!--<input type="radio" name="mapNormMode1" id="mode1" [value]="'color'"-->
+             <!--[(ngModel)]="indicatorUiService.mapNormMode" (change)="onMapModeChange()"-->
+             <!--[ngModelOptions]="{standalone: true}">-->
+      <!--<label for="mode1">Нормальный</label>-->
+    <!--</div>-->
+    <!--<div class="radio" title="2">-->
+      <!--<input type="radio" name="mapNormMode2" id="mode2" [value]="'color3'"-->
+             <!--[(ngModel)]="indicatorUiService.mapNormMode" (change)="onMapModeChange()"-->
+             <!--[ngModelOptions]="{standalone: true}">-->
+      <!--<label for="mode2">Нормирование по РФ</label>-->
+    <!--</div>-->
+  <!--</div>-->
+
   <div class="grid-container" [class.view-mode1]="true">
     <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" id="agGrid" *ngIf="shouldRenderGrid"
                      [localeTextFunc]="agGridLocaleTextFunc"

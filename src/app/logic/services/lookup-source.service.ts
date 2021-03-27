@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MetadataService } from './metadata.service';
 import { DataCachingService } from './data-caching.service';
-import { Observable, Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
-import { StringHelper } from '../../helpers/string-helper';
-import { first, map, switchMap } from 'rxjs/internal/operators';
-import { DateHelper } from '../../helpers/date-helper';
-import { AppConstants } from '../../app-constants';
-import { of } from 'rxjs/internal/observable/of';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
+import { map } from 'rxjs/internal/operators';
 import { isArray } from 'rxjs/internal/util/isArray';
-import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 
 @Injectable()
 export class LookupSourceService {
@@ -127,10 +122,10 @@ export class LookupSourceService {
   private preloadData(lookupNameLower: string, existing: Subject<any[]>) {
     if (lookupNameLower.startsWith('doc-subtype')) {
       this.preloadTwoLevelLookup(lookupNameLower, 'doc-subtype', 'docTypeId', 'docSubtypeId', existing);
-    } else if (lookupNameLower.startsWith('sys-query-view')) {
-      this.preloadTwoLevelLookup(lookupNameLower, 'sys-query-view', 'entityType', 'id', existing);
     } else if (lookupNameLower.startsWith('request-type-subject')) {
       this.preloadTwoLevelLookup(lookupNameLower, 'request-type-subject', 'requestTypeId', 'id', existing);
+    } else if (lookupNameLower.startsWith('indicator-type/favorites')) {
+      this.preloadTwoLevelLookup(lookupNameLower, 'indicator-type/favorites', 'group', 'id', existing);
     } else if (lookupNameLower === 'addr-city') {
       this.metadataService.getCitiesLookup().subscribe(val => {
         existing.next(val);
@@ -194,9 +189,9 @@ export class LookupSourceService {
       ]);
     } else if (lookupNameLower === 'app-indicator-modes') {
       existing.next([{id: 'value', caption: 'Первичное'},
-        {id: 'valueMa', caption: 'Скользящее ср.', shortCaption: 'MA'},
-        {id: 'valueMaTrend', caption: 'Ск.ср. тренд', shortCaption: 'MA\''},
-        {id: 'valueMaTrendX2', caption: 'Ск.ср. тренд 2x', shortCaption: 'MA\'\''}]);
+        {id: 'valueMa', caption: 'Скользящее ср.', shortCaption: 'Скольз.ср.'},
+        {id: 'valueMaTrend', caption: 'Ск.ср. тренд', shortCaption: 'Тренд'},
+        {id: 'valueMaTrendX2', caption: 'Ск.ср. тренд 2x', shortCaption: 'Динамика тренда'}]);
     } else if (lookupNameLower === 'app-years') {
       existing.next([{id: 2018, caption: '2018'},
         {id: 2019, caption: '2019'},
@@ -250,8 +245,8 @@ export class LookupSourceService {
     const dictionary = this.dataCachingService.getCachedData('PreloadTwoLevelLookup', firstLevelLookupNameLower);
 
     const load = (val) => {
-      const entityType = lookupNameLower.substr(firstLevelLookupNameLower.length)
-        ? parseInt(lookupNameLower.substr(firstLevelLookupNameLower.length), 10)
+      const entityType = lookupName.substr(firstLevelLookupNameLower.length)
+        ? lookupName.substr(firstLevelLookupNameLower.length)
         : undefined;
       const allLookupObj = {};
 
@@ -265,7 +260,7 @@ export class LookupSourceService {
       });
 
       for (const key in allLookupObj) {
-        if (parseInt(key, 10) === entityType) {
+        if (key && entityType && key.toLowerCase() == entityType.toLowerCase()) {
           existing.next(allLookupObj[key]);
         } else {
           const byEntityTypeSubj = new ReplaySubject();

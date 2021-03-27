@@ -6,9 +6,15 @@
     </a>
   </div>
   <div class="itech-header form">
-    <div class="form-group itech-group-whole-line">
-      <app-text-lookup class="itech-control-m-large" [contextControlId]="'indicatorTypeId'"
-                       [contextControlName]="'indicatorTypeId'" [lookupName]="'indicator-type/favorites'"
+    <div class="form-group itech-group-whole-line" *ngIf="indicatorUiService.paramsFormGroup">
+      <app-combo-lookup class="itech-control-normal" [contextControlId]="'indicatorGroup'"
+                       [contextControlName]="'indicatorGroup'" [lookupName]="'indicator-type-group'"
+                       [contextFormGroup]="indicatorUiService.paramsFormGroup"></app-combo-lookup>
+      &nbsp;&nbsp;
+      <app-text-lookup *ngIf="indicatorUiService.paramsFormGroup.get('indicatorGroup').value"
+                       class="itech-control-m-large" [contextControlId]="'indicatorTypeId'"
+                       [contextControlName]="'indicatorTypeId'"
+                       [lookupName]="'indicator-type/favorites' + indicatorUiService.paramsFormGroup.get('indicatorGroup').value"
                        [contextFormGroup]="indicatorUiService.paramsFormGroup"></app-text-lookup>
       &nbsp;&nbsp;
       <app-combo-lookup class="itech-control-normal" [contextControlId]="'month'" [sorted]="false"

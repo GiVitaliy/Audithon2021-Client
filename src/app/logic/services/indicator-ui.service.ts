@@ -59,6 +59,7 @@ export class IndicatorUiService {
 
   public mapData: any = {};
   public mapIndicator: any;
+  public mapNormMode: any = 'color';
 
   public gridRedrawRequired = new EventEmitter<any>();
   public chartRedrawRequired = new EventEmitter<any>();
@@ -123,10 +124,19 @@ export class IndicatorUiService {
               private lookupSourceService: LookupSourceService,
               private alertService: AlertService) {
     this.paramsFormGroup = fb.group({
+      'indicatorGroup': 'Демография (росстат)',
       'indicatorTypeId': 1,
       'year': 2020,
       'month': 12,
-      'mode': 'valueMa'
+      'mode': 'value'
+    });
+
+    this.lookupSourceService.getLookup('indicator-type/favorites').subscribe(allinds => {
+      this.paramsFormGroup.get('indicatorGroup').valueChanges.subscribe((newValue) => {
+
+        if (newValue && allinds[newValue] && allinds[newValue].length)
+          this.paramsFormGroup.get('indicatorTypeId').setValue(allinds[newValue][0].id);
+      });
     });
   }
 
@@ -204,6 +214,7 @@ export class IndicatorUiService {
   public selectMapIndicator(indicator: any) {
     this.mapIndicator = indicator;
     this.mapData = {};
+    let RFVal;
     indicator.currentPeriodData.forEach(val => {
       if (val.stateId > 0) {
         this.mapData[val.stateId] = {
@@ -211,16 +222,30 @@ export class IndicatorUiService {
           color: indicator.negative ? -val[indicator.mode] : val[indicator.mode],
         };
       }
+
+      if (val.stateId === -1) {
+        RFVal = indicator.negative ? -val[indicator.mode] : val[indicator.mode];
+      }
     });
+
+    // добавим отдельный показатель, линейно смещенный по РФ
+    if (RFVal) {
+      indicator.currentPeriodData.forEach(val => {
+        if (val.stateId > 0) {
+          this.mapData[val.stateId].color2 = this.mapData[val.stateId].color - RFVal;
+        }
+      });
+    }
+
     this.updateDataColors();
   }
 
-  private updateDataColors() {
-    this.updateDataColors1();
-    this.updateDataColors2();
+  public updateDataColors() {
+    this.updateDataColors1(this.mapNormMode);
+    this.updateDataColors2(this.mapNormMode);
   }
 
-  private updateDataColors1() {
+  private updateDataColors1(useFieldName) {
 
     // здесь расставляем цвета у положительных значений
 
@@ -234,14 +259,14 @@ export class IndicatorUiService {
 
       const singleMoData = this.mapData[mo];
 
-      if (singleMoData.color >= 0) {
+      if (singleMoData[useFieldName] >= 0) {
 
-        if (minVal > singleMoData.color) {
-          minVal = singleMoData.color;
+        if (minVal > singleMoData[useFieldName]) {
+          minVal = singleMoData[useFieldName];
         }
 
-        if (maxVal < singleMoData.color) {
-          maxVal = singleMoData.color;
+        if (maxVal < singleMoData[useFieldName]) {
+          maxVal = singleMoData[useFieldName];
         }
       }
     }
@@ -254,10 +279,10 @@ export class IndicatorUiService {
 
       const singleMoData = this.mapData[mo];
 
-      if (singleMoData.color >= 0) {
+      if (singleMoData[useFieldName] >= 0) {
 
         if (maxVal > minVal) {
-          const perc = (singleMoData.color - minVal) * 17 / (maxVal - minVal);
+          const perc = (singleMoData[useFieldName] - minVal) * 17 / (maxVal - minVal);
           singleMoData.__app_color = IndicatorUiService.colorStops[Math.floor(perc)];
         } else {
           singleMoData.__app_color = '#ffffff';
@@ -266,7 +291,7 @@ export class IndicatorUiService {
     }
   }
 
-  private updateDataColors2() {
+  private updateDataColors2(useFieldName) {
 
     // здесь расставляем цвета у отрицательных значений
 
@@ -281,12 +306,12 @@ export class IndicatorUiService {
       const singleMoData = this.mapData[mo];
 
       if (singleMoData.color < 0) {
-        if (minVal > singleMoData.color) {
-          minVal = singleMoData.color;
+        if (minVal > singleMoData[useFieldName]) {
+          minVal = singleMoData[useFieldName];
         }
 
-        if (maxVal < singleMoData.color) {
-          maxVal = singleMoData.color;
+        if (maxVal < singleMoData[useFieldName]) {
+          maxVal = singleMoData[useFieldName];
         }
       }
     }
@@ -299,10 +324,10 @@ export class IndicatorUiService {
 
       const singleMoData = this.mapData[mo];
 
-      if (singleMoData.color < 0) {
+      if (singleMoData[useFieldName] < 0) {
 
         if (maxVal > minVal) {
-          const perc = 17 - ((singleMoData.color - minVal) * 17 / (maxVal - minVal));
+          const perc = 17 - ((singleMoData[useFieldName] - minVal) * 17 / (maxVal - minVal));
           singleMoData.__app_color = IndicatorUiService.colorStops2[Math.floor(perc)];
         } else {
           singleMoData.__app_color = '#ffffff';
