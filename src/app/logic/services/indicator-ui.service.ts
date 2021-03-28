@@ -215,24 +215,39 @@ export class IndicatorUiService {
     this.mapIndicator = indicator;
     this.mapData = {};
     let RFVal;
+
+    let minVal = 100000000000000, maxVal = -100000000000000;
+
     indicator.currentPeriodData.forEach(val => {
+
+      const color = indicator.negative ? -val[indicator.mode] : val[indicator.mode];
+
       if (val.stateId > 0) {
         this.mapData[val.stateId] = {
           stateId: val.stateId,
-          color: indicator.negative ? -val[indicator.mode] : val[indicator.mode],
+          color: color,
         };
       }
 
-      if (val.stateId === -1) {
-        RFVal = indicator.negative ? -val[indicator.mode] : val[indicator.mode];
+      if (val.stateId == -1) {
+        RFVal = color;
+      }
+
+      if (color < minVal) {
+        minVal = color;
+      }
+
+      if (color > maxVal) {
+        maxVal = color;
       }
     });
 
-    // добавим отдельный показатель, линейно смещенный по РФ
-    if (RFVal) {
+    // если средний показатель по РФ задан, и он находится "между" остальными показателями - центруем все цвета так,
+    // чтобы показатель по РФ был равен нулю
+    if (RFVal && RFVal > minVal && RFVal < maxVal) {
       indicator.currentPeriodData.forEach(val => {
         if (val.stateId > 0) {
-          this.mapData[val.stateId].color2 = this.mapData[val.stateId].color - RFVal;
+          this.mapData[val.stateId].color = this.mapData[val.stateId].color - RFVal;
         }
       });
     }

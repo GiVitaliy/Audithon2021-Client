@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
           action: function () {
             self.indicatorUiService.selectMapIndicator(indicator);
 
-            setTimeout(() => params.api.redrawRows({}), 200);
+            setTimeout(() => params.api.redrawRows({}), 0);
           }
         });
 
@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit {
               self.indicatorUiService.removeChartIndicator(
                 indicator,
                 params.node.data.stateId);
-              setTimeout(() => params.api.redrawRows({}), 200);
+              setTimeout(() => params.api.redrawRows({}), 0);
             }
           });
         } else {
@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit {
                 params.node.data.stateId,
                 params.node.data.stateCaption,
                 'y-axis-0');
-              setTimeout(() => params.api.redrawRows({}), 200);
+              setTimeout(() => params.api.redrawRows({}), 0);
             }
           });
           retVal.push({
@@ -82,17 +82,21 @@ export class DashboardComponent implements OnInit {
                 params.node.data.stateCaption,
                 'y-axis-1');
 
-              setTimeout(() => params.api.redrawRows({}), 200);
+              setTimeout(() => params.api.redrawRows({}), 0);
             }
           });
         }
         retVal.push('separator');
+
         retVal.push({
           name: 'Удалить показатель',
           action: function () {
             self.indicatorUiService.deleteIndicator(indicator);
           }
         });
+
+        retVal.push('separator');
+        retVal.push('excelExport');
 
         return retVal;
       }
@@ -114,6 +118,17 @@ export class DashboardComponent implements OnInit {
 
   onGridReady(params) {
     this.gridApi = params.api;
+  }
+
+  onCellDoubleClicked(params) {
+    const fieldname = params.column ? params.column.colDef.field : undefined;
+    if (fieldname) {
+      const indicator = this.indicatorUiService.selectedIndicators[+(fieldname.substring(3))];
+      if (indicator && this.indicatorUiService.mapIndicator !== indicator) {
+        this.indicatorUiService.selectMapIndicator(indicator);
+        setTimeout(() => params.api.redrawRows({}), 0);
+      }
+    }
   }
 
   moClicked(stateId) {
