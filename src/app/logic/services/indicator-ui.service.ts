@@ -124,11 +124,11 @@ export class IndicatorUiService {
               private lookupSourceService: LookupSourceService,
               private alertService: AlertService) {
     this.paramsFormGroup = fb.group({
-      'indicatorGroup': 'Демография (росстат)',
-      'indicatorTypeId': 1,
+      'indicatorGroup': 'Суммы МСП (егиссо)',
+      'indicatorTypeId': 1000026,
       'year': 2020,
       'month': 12,
-      'mode': 'value'
+      'mode': 'valueMa'
     });
 
     this.lookupSourceService.getLookup('indicator-type/favorites').subscribe(allinds => {
@@ -198,6 +198,7 @@ export class IndicatorUiService {
         newIndicator.indicatorCaption = modePrefix + indicatorTypes[newIndicatorTypeId] + ' '
           + StringHelper.getRuDate(new Date(selectedYear, selectedMonth - 1, 1));
         newIndicator.negative = indicatorTypes['Obj' + newIndicatorTypeId].negative;
+        newIndicator.precision =  indicatorTypes['Obj' + newIndicatorTypeId].precision;
 
         this.getPeriod(newIndicatorTypeId, newIndicator.year, newIndicator.month).subscribe(periodData => {
           newIndicator.currentPeriodData = periodData;
@@ -464,7 +465,8 @@ export class IndicatorUiService {
         this.gridColumnDefs.push({
           headerName: indicator.indicatorCaption,
           field: 'val' + i, colId: 'val' + i, width: 130,
-          cellRenderer: (params => this.renderIndicatorValue(indicator, params))
+          cellRenderer: (params => this.renderIndicatorValue(indicator, params)),
+          cellStyle: {'text-align': 'right'}
         });
 
         (indicator.currentPeriodData || []).forEach(pdata => {
@@ -480,7 +482,7 @@ export class IndicatorUiService {
 
   renderIndicatorValue(indicator: any, params: any) {
 
-    let rendered = params.value || params.value === 0 ? params.value : 'N/A';
+    let rendered = params.value || params.value === 0 ? this.formatNumeric(indicator.precision, params.value) : 'N/A';
 
     if (this.isIndicatorOnChart(indicator, params.data.stateId)) {
       rendered = '<clr-icon shape="line-chart" size="18" style="margin-top: -6px;color:#0000FF"></clr-icon>&nbsp;' + rendered;
@@ -491,12 +493,29 @@ export class IndicatorUiService {
       const singleMoData = this.mapData[params.data.stateId];
 
       if (singleMoData) {
-        rendered = '<span class="map-legend-item" style="background:'
-          + (singleMoData.__app_color || '#ffffff') + '">&nbsp;&nbsp;</span>' + rendered;
+        rendered = rendered + '<span class="map-legend-item" style="background:'
+          + (singleMoData.__app_color || '#ffffff') + '">&nbsp;&nbsp;</span>';
       }
     }
 
     return rendered;
+  }
+
+  private formatNumeric(precision, value) {
+    if (precision === 0) {
+      return Math.floor(value).toLocaleString('ru-RU');
+    } else {
+      let retVal = (Math.floor(value * 100) / 100).toLocaleString('ru-RU');
+
+      const dotpos = retVal.indexOf(',');
+      if (dotpos < 0) {
+        return retVal + ',00';
+      } else if (dotpos === retVal.length - 2) {
+        return retVal + '0';
+      } else {
+        return retVal;
+      }
+    }
   }
 
   private normalizeChartData(indicator, data: any[]) {

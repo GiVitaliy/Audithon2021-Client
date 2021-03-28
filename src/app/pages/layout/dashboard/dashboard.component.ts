@@ -113,7 +113,7 @@ export class DashboardComponent implements OnInit {
     this.indicatorUiService.gridRedrawRequired.subscribe(() => this.redrawGrid());
     this.indicatorUiService.chartRedrawRequired.subscribe(() => this.redrawChart());
 
-    this.indicatorUiService.addIndicator2(1, 12, 2020, 'value');
+    this.indicatorUiService.addIndicator2(1000003, 12, 2020, 'valueMa');
   }
 
   onGridReady(params) {
@@ -121,13 +121,40 @@ export class DashboardComponent implements OnInit {
   }
 
   onCellDoubleClicked(params) {
+
     const fieldname = params.column ? params.column.colDef.field : undefined;
+
     if (fieldname) {
       const indicator = this.indicatorUiService.selectedIndicators[+(fieldname.substring(3))];
-      if (indicator && this.indicatorUiService.mapIndicator !== indicator) {
-        this.indicatorUiService.selectMapIndicator(indicator);
-        setTimeout(() => params.api.redrawRows({}), 0);
+
+      if (!indicator) {
+        return;
       }
+
+      if ((params.event.ctrlKey || params.event.shiftKey) &&
+        this.indicatorUiService.isIndicatorOnChart(indicator, params.node.data.stateId)) {
+        this.indicatorUiService.removeChartIndicator(
+          indicator,
+          params.node.data.stateId);
+        setTimeout(() => params.api.redrawRows({}), 0);
+      } else if (params.event.ctrlKey) {
+        this.indicatorUiService.addChartIndicator(
+          indicator,
+          params.node.data.stateId,
+          params.node.data.stateCaption,
+          'y-axis-0');
+        setTimeout(() => params.api.redrawRows({}), 0);
+      } else if (params.event.shiftKey) {
+        this.indicatorUiService.addChartIndicator(
+          indicator,
+          params.node.data.stateId,
+          params.node.data.stateCaption,
+          'y-axis-1');
+        setTimeout(() => params.api.redrawRows({}), 0);
+      } else if (this.indicatorUiService.mapIndicator !== indicator) {
+          this.indicatorUiService.selectMapIndicator(indicator);
+          setTimeout(() => params.api.redrawRows({}), 0);
+        }
     }
   }
 

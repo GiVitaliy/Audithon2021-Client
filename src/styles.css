@@ -2200,6 +2200,6 @@ app-mo-map > #focused-map-details > h5 {
   width: 16px;
   line-height: 16px;
   height: 16px;
-  margin-right: 5px;
+  margin-left: 5px;
   margin-top: 5px;
 }
